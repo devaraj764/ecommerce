@@ -1,8 +1,15 @@
 import React from 'react';
-import { Box, Flex, Link, Spacer, Text, Container, HStack, Image, Badge } from '@chakra-ui/react';
+import {
+    Box, Flex, Link, Spacer, Text, Container, HStack, Image, Badge,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Button,
+} from '@chakra-ui/react';
 import BrandLogo from '../assets/brand-logo.svg';
 import { Link as RLink, useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { AiOutlineHeart, AiOutlineLogout, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { BsBoxSeam } from 'react-icons/bs'
 import { useGetUserQuery } from '../services/users';
 import SignInButton from './actionBtns/SignInButton';
@@ -19,8 +26,13 @@ const Navbar: React.FC = () => {
         }
     }, [data, error]);
 
+    const Logout = async () => {
+        localStorage.removeItem('token')
+        window.location.reload();
+    }
+
     return (
-        <Box p={4} borderBottom={'1px solid'} bg='#fff' borderColor={'blackAlpha.100'}
+        <Box py={4} borderBottom={'1px solid'} bg='#fff' borderColor={'blackAlpha.100'}
             position={'fixed'}
             top={'0'}
             right={'0'}
@@ -39,13 +51,31 @@ const Navbar: React.FC = () => {
                     {
                         data ?
                             <>
-                                <Link as={RLink} to='/wishlist' mr={10} className='flex nav-items-lg' color='gray.600'>
-                                    <AiOutlineHeart size='24' /> Wishlist
-                                </Link>
-                                <Link as={RLink} to='/orders' mr={10} className='flex nav-items-lg' color='gray.600'>
-                                    <BsBoxSeam size='22' /> Orders
-                                </Link>
-                                <Link as={RLink} to='/cart' mr={10} className='flex nav-items-lg' color='gray.600'>
+                                <Menu>
+                                    <MenuButton color='gray.600' className='nav-items-lg' ml={10} _hover={{ color: '#0078ff' }}>
+                                        <Flex alignItems={'center'}>
+                                            <AiOutlineUser size='24' /> &nbsp; {data.fullname}
+                                        </Flex>
+                                    </MenuButton>
+                                    <MenuList>
+                                        <MenuItem className='nav-items-lg'>
+                                            <Link as={RLink} to='/wishlist' ml={10} className='flex nav-items-lg' color='gray.600'>
+                                                <AiOutlineHeart size='24' /> Wishlist
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem className='nav-items-lg'>
+                                            <Link as={RLink} to='/orders' ml={10} className='flex nav-items-lg' color='gray.600'>
+                                                <BsBoxSeam size='22' /> Orders
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem as={Box}>
+                                            <Button variant={'outline'} leftIcon={<AiOutlineLogout />} colorScheme='red' w={'full'} onClick={Logout}>
+                                                Logout
+                                            </Button>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
+                                <Link as={RLink} to='/cart' ml={10} className='flex nav-items-lg' color='gray.600'>
                                     <AiOutlineShoppingCart size='24' /> Cart <Badge fontSize={'1em'}>{data.cart.length}</Badge>
                                 </Link>
                             </>

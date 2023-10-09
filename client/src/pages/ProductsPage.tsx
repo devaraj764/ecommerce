@@ -4,6 +4,7 @@ import ProductsGrid from '../components/grids/ProductsGrid';
 import { Box, Input, Text } from '@chakra-ui/react';
 import { TProduct } from '../services/types/products';
 import ProductsFilter from '../components/ProductsFilter';
+import NotItemsFound from '../components/common/NotItemsFound';
 
 type Props = {}
 
@@ -21,8 +22,8 @@ const ProductsPage: React.FC<Props> = () => {
       console.log(hardReset)
       if (hardReset) setProducts(data.products)
       else setProducts(prev => [...prev, ...data.products]);
-      setHardReset(false)
     }
+    setHardReset(false)
   }, [data]);
 
   const applyFilter = (query: string) => {
@@ -68,9 +69,12 @@ const ProductsPage: React.FC<Props> = () => {
       <br />
       <center>
         {
-          // @ts-ignore
-          isSuccess && data?.products?.length <= 0 &&
-          <Text color='gray.700'>Yay you have reached end</Text>
+          (isSuccess && data.products.length === 0) &&
+          (query === '' || search === '') &&
+          <Text color='gray.700'>You have reached end</Text>
+        }
+        {
+          products.length === 0 && <NotItemsFound message='😢  No Products Found' />
         }
       </center>
     </Box>

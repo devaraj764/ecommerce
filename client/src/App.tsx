@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import WishlistPage from './pages/WishlistPage'
 import OrdersPage from './pages/OrdersPage'
 import { Container } from '@chakra-ui/react'
+import BottomNavbar from './components/BottomNavbar'
 
 type Props = {}
 
@@ -22,6 +23,7 @@ const App: React.FC<Props> = () => {
           <Route path='/orders' Component={OrdersPage} />
         </Routes>
       </Container>
+      <BottomNavbar />
     </div>
   )
 }
