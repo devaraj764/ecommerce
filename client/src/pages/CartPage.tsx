@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CartItem } from '../services/types/products';
-import { useGetCartItemsQuery } from '../services/users';
+import { useGetCartItemsQuery, useGetUserQuery } from '../services/users';
 import { Box, Button, HStack, Heading, useToast } from '@chakra-ui/react';
 import CartItemsGrid from '../components/grids/CartItemsGrid';
 import AnimatedDiv from '../components/common/AnimatedDiv';
@@ -9,8 +9,10 @@ import { FaRegMoneyBill1 } from 'react-icons/fa6'
 import { AiOutlineClose } from 'react-icons/ai';
 import { useCreateOrderMutation } from '../services/orders';
 import { useNavigate } from 'react-router-dom';
+import formatCurrency from '../helpers/formatCurrency';
 
 const CartPage: React.FC = () => {
+  const { refetch } = useGetUserQuery()
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [createOrder] = useCreateOrderMutation()
   const { data, error, isLoading, isSuccess } = useGetCartItemsQuery();
@@ -39,7 +41,7 @@ const CartPage: React.FC = () => {
       .unwrap()
       .then(() => {
         toast({
-          title: 'Added address successfully!',
+          title: '🙌 Added address successfully!',
           status: 'success',
           duration: 3000
         })
@@ -50,7 +52,8 @@ const CartPage: React.FC = () => {
           status: 'error',
           duration: 3000
         })
-      }).finally(() => {
+      }).finally(async () => {
+        await refetch();
         navigate('/orders')
       })
   }
@@ -64,7 +67,7 @@ const CartPage: React.FC = () => {
           <Button
             fontSize={'16px'}
             colorScheme='messenger' onClick={() => setCheckout(!checkout)}>
-            ₹ {totalAmount}/- CheckOut
+            {formatCurrency(totalAmount)}/- CheckOut
           </Button>
         }
       </HStack>
@@ -73,7 +76,7 @@ const CartPage: React.FC = () => {
         <Addresses address={address} setAddress={setAddress} />
         <HStack justifyContent={'flex-end'} mt='2'>
           <Button onClick={() => setCheckout(false)} borderRadius={'0'} leftIcon={<AiOutlineClose />} fontSize={'1.3em'}> Cancel</Button>
-          <Button onClick={handlePay} isDisabled={address === ''} borderRadius={'0'} leftIcon={<FaRegMoneyBill1 />} colorScheme='green' fontSize={'1.3em'}>Pay {totalAmount}/-</Button>
+          <Button onClick={handlePay} isDisabled={address === ''} borderRadius={'0'} leftIcon={<FaRegMoneyBill1 />} colorScheme='green' fontSize={'1.3em'}>Pay {formatCurrency(totalAmount)}/-</Button>
         </HStack>
       </AnimatedDiv>
     </Box>

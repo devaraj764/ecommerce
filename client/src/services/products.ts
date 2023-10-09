@@ -7,8 +7,8 @@ export const productsApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
-        getPorducts: builder.query<TProductResponse, number>({
-            query: (pageNo = 1) => `/products?_page=${pageNo}&_limit=15`,
+        getPorducts: builder.query<TProductResponse, { pageNo: number, query?: string, limit?: number, search?: string}>({
+            query: (data) => `/products?${data?.query}_page=${data.pageNo || 1}&_limit=${data.limit || 15}&search=${data.search}`,
             providesTags: ['Products']
         }),
     }),

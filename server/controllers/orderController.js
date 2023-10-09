@@ -32,7 +32,7 @@ exports.createOrder = async (req, res) => {
 exports.getOrdersByUserId = async (req, res) => {
     try {
         const userId = req.user._id;
-        const orders = await Order.find({ user: userId }).sort({ updatedAt: -1 }).select('items totalAmount isPaid status address createdAt updatedAt').populate('items');
+        const orders = await Order.find({ user: userId }).sort({ updatedAt: -1 }).select('items totalAmount isPaid status address createdAt updatedAt').populate('items.product');
         res.status(200).json(orders);
     } catch (error) {
         console.error(error);

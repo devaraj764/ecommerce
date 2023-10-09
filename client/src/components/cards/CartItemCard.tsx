@@ -7,6 +7,7 @@ import { CartItem } from '../../services/types/products'
 import { AiOutlinePlus } from 'react-icons/ai'
 import AddToCartBtn from '../actionBtns/AddToCartBtn'
 import { useUpdateCartItemMutation } from '../../services/users'
+import formatCurrency from '../../helpers/formatCurrency'
 
 
 const ProductCard: React.FC<CartItem> = ({ product, quantity, _id }) => {
@@ -71,7 +72,7 @@ const ProductCard: React.FC<CartItem> = ({ product, quantity, _id }) => {
                         <Text>{count}</Text>
                         <Button isDisabled={count >= product.items_left} onClick={() => setCount(prev => prev + 1)}><AiOutlinePlus /> </Button>
                     </HStack>
-                    <Text fontSize={'1.5em'} fontWeight={700}>₹ {product.price}/-</Text>
+                    <Text fontSize={'1.5em'} fontWeight={700}>{formatCurrency(product.price)}/-</Text>
                 </HStack>
             </CardBody>
         </Card>

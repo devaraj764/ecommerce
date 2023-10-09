@@ -4,6 +4,7 @@ import AddToWishlistBtn from '../actionBtns/AddToWishlistBtn'
 import ImageWithFallback from '../ImageWithFallback'
 import { Badge, Box, Card, CardBody, HStack, Tag, Text } from '@chakra-ui/react'
 import { TProduct } from '../../services/types/products'
+import formatCurrency from '../../helpers/formatCurrency'
 
 type Props = {
     product: TProduct
@@ -43,7 +44,7 @@ const ProductCard: React.FC<Props> = ({ product, children }: Props) => {
                         <Text fontSize={'1em'} mt={3} fontWeight={700}>{product.brand}</Text>
                         <Text fontSize={'1em'} className='truncate-text' maxW={'250px'}>{product.name}</Text>
                     </Box>
-                    <Text fontSize={'1.5em'} fontWeight={700}>₹ {product.price}/-</Text>
+                    <Text fontSize={'1.5em'} fontWeight={700}>{formatCurrency(product.price)}/-</Text>
                 </HStack>
                 <HStack mt={3} gap='10px'>
                     <Tag colorScheme='yellow' fontSize={'16px'}><AiFillStar size='18' />&nbsp;{product.rating}</Tag>

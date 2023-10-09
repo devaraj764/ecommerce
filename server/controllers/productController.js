@@ -1,21 +1,42 @@
 const Product = require('../models/Product');
-const User = require('../models/User'); 
+const User = require('../models/User');
 
 // Controller methods for product routes
 exports.getAllProducts = async (req, res) => {
   try {
     const page = parseInt(req.query._page) || 1;
     const pageSize = parseInt(req.query._limit) || 10; // Default page size is 10
+    const brands = req.query?.brands?.split(',')
+    const genders = req.query?.genders?.split(',')
+    const priceRange = req.query?.priceRange?.split(',')
+    const sortBy = req.query?.sortBy;
+    const search = req.query?.search || '';
 
     const skip = (page - 1) * pageSize;
-
     const totalProducts = await Product.countDocuments();
     const totalPages = Math.ceil(totalProducts / pageSize);
 
-    const products = await Product.find()
-      .skip(skip)
-      .limit(pageSize)
-      .exec();
+    const query = Product.find({ name: { $regex: new RegExp(search, 'i') } });
+    query.skip(skip);
+    query.limit(pageSize);
+    if (brands && brands.length > 0) {
+      query.where('brand').in(brands)
+    }
+    if (genders && genders.length > 0) {
+      query.where('gender').in(genders)
+    }
+    if (priceRange) {
+      query.where('price').gte(priceRange[0])
+      query.where('price').lte(priceRange[1])
+    }
+    if (sortBy === 'newlyadded') {
+      query.sort({ updatedAt: -1 })
+    }
+    if (sortBy === 'mostrated') {
+      query.sort({ rating: -1 })
+    }
+
+    const products = await query.exec();
     res.json({
       products,
       currentPage: page,

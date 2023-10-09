@@ -18,8 +18,8 @@ const ProductsGrid: React.FC<Props> = ({ data, isLoading, isSuccess, error }: Pr
     React.useEffect(() => {
         if (error) {
             toast({
-                // @ts-ignore 
-                title: error.data?.message,
+                // @ts-ignore
+                title: error.data?.message || "Internal Server Error",
                 duration: 2000,
                 status: 'warning',
             });

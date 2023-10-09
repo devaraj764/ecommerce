@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
     imageURL: String,
     slug: String,
     rating: { type: Number, Set: (value) => parseFloat(value) },
-});
+}, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);
 

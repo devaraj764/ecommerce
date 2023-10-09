@@ -1,11 +1,10 @@
 import { CartItem } from "./products"
-import { Address } from "./users"
 
 export interface TOrder{
     _id?: string
     items: CartItem[]
     totalAmount: number
-    address: Address
+    address: string
     status: string
     isPaid: boolean
     createdAt: number
