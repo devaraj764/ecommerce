@@ -67,7 +67,7 @@ const OrdersGrid: React.FC<Props> = ({ data, isLoading, isSuccess, error }: Prop
                         </GridItem>
                     ))}
                 </Grid>
-                : <NotItemsFound message='😢 No orders' />
+                : !isLoading && <NotItemsFound message='😢 No orders' />
             }
         </>
     )

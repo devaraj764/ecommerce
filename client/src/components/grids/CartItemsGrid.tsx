@@ -43,7 +43,7 @@ const CartItemsGrid: React.FC<Props> = ({ data, isLoading, isSuccess, error }: P
                         )
                     })}
                 </Grid>
-                : <NotItemsFound message='😢 No items in cart' />
+                : !isLoading && <NotItemsFound message='😢 No items in cart' />
             }
         </>
     )

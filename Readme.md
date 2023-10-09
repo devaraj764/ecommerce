@@ -4,6 +4,8 @@
 
 This README provides an overview of your E-Commerce project, which consists of two main components: the client and server. The client is responsible for the user interface and interacts with the server to provide a seamless shopping experience. The server handles authentication, data storage, and API endpoints.
 
+## Project Live: [Website Link](https://shoe-shore-commerce.web.app/)
+
 ## Client
 
 ### Project Description

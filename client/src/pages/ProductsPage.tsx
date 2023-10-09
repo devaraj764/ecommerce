@@ -18,6 +18,7 @@ const ProductsPage: React.FC<Props> = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(hardReset)
       if (hardReset) setProducts(data.products)
       else setProducts(prev => [...prev, ...data.products]);
       setHardReset(false)
@@ -46,8 +47,10 @@ const ProductsPage: React.FC<Props> = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setHardReset(true);
-      setPageNo(1);
+      if (searchInput !== '') {
+        setHardReset(true);
+        setPageNo(1);
+      }
       setSearch(searchInput)
     }, 1000)
     return () => clearTimeout(timeout)
